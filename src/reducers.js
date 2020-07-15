@@ -1,11 +1,15 @@
-// import { setSearchField } from './actions';
-import { CHANGE_SEARCH_FIELD } from './constants';
+// import { setSearchField } from './actions'; // no need actions
+import { CHANGE_SEARCH_FIELD,
+    REQUEST_ROBOTS_PENDING,
+    REQUEST_ROBOTS_SUCCESS,
+    REQUEST_ROBOTS_FAILED
+ } from './constants';
 
-const initialState = {
+const searchFieldInitialState = {
     searchField:''
 }
 
-export const searchRobots = (state=initialState, action={}) => {
+export const searchRobots = (state=searchFieldInitialState, action={}) => {
     switch (action.type) {
         case CHANGE_SEARCH_FIELD:
             // return a new state, not modify it
@@ -35,3 +39,22 @@ export const searchRobots = (state=initialState, action={}) => {
 // {}- where we going to put the data
 // state- put the initial state inside
 // {searchfield : action.payload}- we'll change the value of searchfield property 
+
+// a different state just for robots
+const robotsInitialState = {
+    isPending: false,   // default
+    robots: [],
+    error: ''    
+}
+export const loadRobots = (state=robotsInitialState, action={}) => {
+    switch(action.type){
+        case REQUEST_ROBOTS_PENDING:
+            return Object.assign({}, state, { isPending: true })
+        case REQUEST_ROBOTS_SUCCESS:
+            return Object.assign({}, state, { robots: action.payload, isPending: false})
+        case REQUEST_ROBOTS_FAILED:
+            return Object.assign({}, state, { error: action.payload, isPending: false })
+        default:
+            return state;
+    }
+}

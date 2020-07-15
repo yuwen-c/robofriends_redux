@@ -1,4 +1,8 @@
-import { CHANGE_SEARCH_FIELD } from './constants';
+import { CHANGE_SEARCH_FIELD,
+    REQUEST_ROBOTS_PENDING,
+    REQUEST_ROBOTS_SUCCESS,
+    REQUEST_ROBOTS_FAILED
+ } from './constants';
 
 export const setSearchField = (text) => {
     return {
@@ -17,3 +21,13 @@ export const setSearchField = (text) => {
 // and return an object, that includes type, and payload properties.
 // type stands for the describing string/constant,
 // payload means the data we'll send to reducer.
+
+// componentDidMount, fetch robots.
+// Not returns an obj, but a function
+export const fetchRobots =  (dispatch) => {
+    dispatch({type: REQUEST_ROBOTS_PENDING});
+    fetch('https://jsonplaceholder.typicode.com/users') 
+    .then(response => response.json())
+    .then(robots => dispatch({type: REQUEST_ROBOTS_SUCCESS, payload: robots}))
+    .catch(error => dispatch({type: REQUEST_ROBOTS_FAILED, payload: error})) 
+}
